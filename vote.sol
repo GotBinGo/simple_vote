@@ -13,20 +13,19 @@ contract SingleUseVote {
     string matter_link;
     string matter_hash;
     
-    uint256 votedYes;
-    uint256 votedNo;
+    uint256 yesVotes;
+    uint256 noVotes;
     uint256 numberOfVoters;
     
     mapping(address => Voter) voters;
     // </contract_variables>
 
-    function SingleUseVote(string link, string hash, uint256 deadline) public
+    constructor(string link, string hash, uint256 deadline) public
     {
         rendezo = msg.sender;
         hatarido = deadline;
         matter_link = link;
         matter_hash = hash;
-
     }
 
     function registerParticipant(address participant) public {
@@ -40,24 +39,25 @@ contract SingleUseVote {
 
     function vote(bool voteYes) public {
         require(
+            now < hatarido &&
             voters[msg.sender].registered &&
-            voters[msg.sender].voted == false
+            !voters[msg.sender].voted
         );
         voters[msg.sender].voted = true;
         if (voteYes) {
-            votedYes = votedYes + 1;    
+            yesVotes = yesVotes + 1;    
         }
         else {
-            votedNo = votedNo + 1;
+            noVotes = noVotes + 1;
         }
         
     }
 
     function getResult() public view returns (bool) {
         require(
-             block.timestamp > hatarido
+            now > hatarido
         );
-        return votedYes > numberOfVoters / 2;
+        return (yesVotes > (numberOfVoters / 2));
     }
 
 }

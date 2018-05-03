@@ -20,7 +20,7 @@ contract SingleUseVote {
     mapping(address => Voter) voters;
     // </contract_variables>
 
-    constructor(string link, string hash, uint256 deadline) public
+    function SingleUseVote(string link, string hash, uint256 deadline) public
     {
         rendezo = msg.sender;
         hatarido = deadline;

@@ -29,6 +29,10 @@ contract SingleUseVote {
 
     function SingleUseVote(string link, string hash, uint256 deadline) public
     {
+        // csak jovobeli hataridovel
+        require(
+            (now < deadline)
+        );
         // letrehozo a rendezo
         rendezo = msg.sender;
         hatarido = deadline;
@@ -37,7 +41,9 @@ contract SingleUseVote {
     }
 
     function registerParticipant(address participant) public {
+        // csak a hatarido elott veheto fel uj resztvevo
         require(
+            (now < hatarido) &&
             (msg.sender == rendezo) &&
             !voters[participant].registered
         );

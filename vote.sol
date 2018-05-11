@@ -11,10 +11,10 @@ contract SingleUseVote {
     // a tulajdonos cime
     address rendezo;
     // hatarido timestamp
-    uint256 hatarido;
+    uint256 public hatarido;
     // pdf link es hash
-    string matter_link;
-    string matter_hash;
+    string public matter_link;
+    string public matter_hash;
     
     // igen szavazatok szama
     uint256 yesVotes;

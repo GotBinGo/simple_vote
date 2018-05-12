@@ -11,10 +11,10 @@ contract SingleUseVote {
     // a tulajdonos cime
     address rendezo;
     // hatarido timestamp
-    uint256 hatarido;
+    uint256 public hatarido;
     // pdf link es hash
-    string matter_link;
-    string matter_hash;
+    string public matter_link;
+    string public matter_hash;
     
     // igen szavazatok szama
     uint256 yesVotes;
@@ -29,6 +29,10 @@ contract SingleUseVote {
 
     function SingleUseVote(string link, string hash, uint256 deadline) public
     {
+        // csak jovobeli hataridovel
+        require(
+            (now < deadline)
+        );
         // letrehozo a rendezo
         rendezo = msg.sender;
         hatarido = deadline;
@@ -37,7 +41,9 @@ contract SingleUseVote {
     }
 
     function registerParticipant(address participant) public {
+        // csak a hatarido elott veheto fel uj resztvevo
         require(
+            (now < hatarido) &&
             (msg.sender == rendezo) &&
             !voters[participant].registered
         );
